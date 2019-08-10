@@ -1,28 +1,16 @@
 import React from 'react';
 import { Component } from 'react';
-import { inject, observer } from 'mobx-react';
-import QuestionStore from './Store/QuestionStore';
+import Game from './Components/Game';
 
-interface AppProps {
-  questionStore: QuestionStore;
-}
 
-@inject("questionStore")
-@observer
-class App extends Component<AppProps, {}> {
-  constructor(props: AppProps) {
-    super(props);
-  }
-
-  componentDidMount() {
-    this.props.questionStore.populateQuestions();
-  }
-
-  render() {
-    return(
-      <h1>Test return</h1>
-    )
-  }
+class App extends Component {
+    render() {
+        return (
+            <div>
+                <Game />
+            </div>
+        )
+    }
 }
 
 export default App;

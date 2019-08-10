@@ -3,15 +3,10 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { Provider } from "mobx-react";
-import QuestionStore from "./Store/QuestionStore";
 
-const store = new QuestionStore();
 
 ReactDOM.render(
-  <Provider questionStore={store}>
-    <App />
-  </Provider>,
+    <App />,
   document.getElementById("root")
 );
 
@@ -19,4 +14,3 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
-ß

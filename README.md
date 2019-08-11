@@ -1,5 +1,5 @@
 # Project details
-TypeScript React app using axios to communicate with a Trivia API. Gets a randomized trivia question the user will try to answer. Work in progress, most of the code is not optimized.
+TypeScript React app using axios to communicate with a Trivia API. Gets a randomized trivia question the user will try to answer. Work in progress.
 
 ## To run project
 1. Clone repo

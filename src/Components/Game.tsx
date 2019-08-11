@@ -14,8 +14,10 @@ interface QuestionState  {
         incorrect_answers: string[];
     }],
     isLoaded: boolean,
-    possibleAnswers: string[]
+    possibleAnswers: string[],
+    selectedAnswer: string
 }
+
 class Game extends Component<{}, QuestionState> {
     constructor(props: any) {
         super(props);
@@ -29,16 +31,14 @@ class Game extends Component<{}, QuestionState> {
                 incorrect_answers: []
             }],
             isLoaded: false,
-            possibleAnswers: []
+            possibleAnswers: [],
+            selectedAnswer: ''
         }
     }
 
     componentDidMount() {
         this.populateQuestions();
-        // this.populatePossibleAnswers();
-        // console.log(this.state.possibleAnswers);
     }
-    // .replace(/'/g, "&#039;");
     populateQuestions() {
         axios.get(`https://opentdb.com/api.php?amount=1`)
         .then(res => {
@@ -50,13 +50,12 @@ class Game extends Component<{}, QuestionState> {
             this.setState({
             })
             this.populatePossibleAnswers();
+        this.shufflePossibleAnswers();
+
         })
     }
 
     populatePossibleAnswers() {
-        console.log(this.state.question[0].correct_answer);
-        console.log(this.state.question[0])
-        console.log(this.state.question[0].incorrect_answers)
         this.setState({
             possibleAnswers: [this.state.question[0].correct_answer]
         })
@@ -79,9 +78,19 @@ class Game extends Component<{}, QuestionState> {
         )
     }
 
-    renderPossibleAnswers() {
-        // console.log(this.state.possibleAnswers)
+    shufflePossibleAnswers() {
+        let temp = this.state.possibleAnswers.slice();
 
+        for (let i = temp.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [temp[i], temp[j]] = [temp[j], temp[i]];
+        }
+        this.setState({possibleAnswers: temp})
+    }
+
+
+    renderPossibleAnswers() {
+        console.log(this.state.question[0].correct_answer);
         return(
             <div>
                 {this.state.possibleAnswers.map(possibleAnswer => 

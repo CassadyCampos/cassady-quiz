@@ -3,8 +3,13 @@ import { Component } from "react";
 import Question from "./Question";
 import axios from "axios";
 import "../css/Game.css";
+import ParseHtmlEntity from "../Utility/HtmlEntityParser";
 
-interface QuestionState {
+interface GameProps {
+    domParserHtmlEntities: DOMParser
+}
+
+interface GameState {
   question: [
     {
       category: string;
@@ -18,9 +23,10 @@ interface QuestionState {
   isLoaded: boolean;
   possibleAnswers: string[];
   selectedAnswer: string;
+  answerConfirmed: boolean;
 }
 
-class Game extends Component<{}, QuestionState> {
+class Game extends Component<GameProps, GameState> {
   constructor(props: any) {
     super(props);
 
@@ -37,7 +43,8 @@ class Game extends Component<{}, QuestionState> {
       ],
       isLoaded: false,
       possibleAnswers: [],
-      selectedAnswer: ""
+      selectedAnswer: "",
+      answerConfirmed: false,
     };
   }
 
@@ -68,11 +75,16 @@ class Game extends Component<{}, QuestionState> {
   }
 
   renderQuestion() {
+    const parser = this.props.domParserHtmlEntities;
+    let oldString = this.state.question[0].question;
+    const convertedString = ParseHtmlEntity(oldString, parser)
+
     return (
       <div>
-        <h1>Here is your Question. . .</h1>
+        <h1 className="question-text">Here is your Question. . .</h1>
         <div>
-          <div>{this.state.question[0].question}</div>
+          {/* <div className="question-text">{this.state.question[0].question}</div> */}
+          <div className="question-text">{convertedString}</div>
         </div>
       </div>
     );
@@ -89,32 +101,63 @@ class Game extends Component<{}, QuestionState> {
   }
 
   selectAnswer(selectedAnswer: string) {
-    this.setState({ selectedAnswer: selectedAnswer });
+      if (!this.state.answerConfirmed) {
+        this.setState({ selectedAnswer: selectedAnswer });
+      }
+  }
+
+  confirmAnswer() {
+    this.setState({ answerConfirmed: true });
   }
 
   renderPossibleAnswers() {
-
-
+      const parser = this.props.domParserHtmlEntities;
+      let convertedArray:string[] = [];
+      this.state.possibleAnswers.forEach(oldString => {
+          convertedArray.push(oldString);
+      });
     return (
-      <div>
-        {this.state.possibleAnswers.map(possibleAnswer => (
+      <div className="possible-answers-list">
+        {convertedArray.map(possibleAnswer => (
           <div
             className={this.state.selectedAnswer === possibleAnswer ? 'selected-answer': 'possible-answer'}
             onClick={() => this.selectAnswer(possibleAnswer)}
             key={this.state.possibleAnswers.indexOf(possibleAnswer)}>
-            {possibleAnswer}
+            {ParseHtmlEntity(possibleAnswer, parser)}
           </div>
         ))}
       </div>
     );
   }
 
+   renderAnswerDetails() {
+      if (this.state.selectedAnswer === this.state.question[0].correct_answer) {
+          return (
+              <div>
+              <div>CORRECT!</div>
+            <button>Play Again!</button>
+              </div>
+          )
+      }
+      return(
+        <div>
+        <div>WRONG!</div>
+      <button>Play Again!</button>
+        </div>
+      )
+  }
+
 
   render() {
     return (
-      <div>
+      <div className="game-container">
         {this.renderQuestion()}
         {this.renderPossibleAnswers()}
+        {this.state.selectedAnswer !== '' ? 
+        <div>
+            <button onClick={() => this.confirmAnswer()}>Confirm Answer!</button>
+        </div> : ''}
+        {this.state.answerConfirmed ? this.renderAnswerDetails() : ''}
       </div>
     );
   }

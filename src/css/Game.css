@@ -1,3 +1,27 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
+
+.possible-answers-list {
+    border: 1px solid black;    
+}
+
+.possible-answer {
+    margin: 8px 0;
+    margin-left: 32px;
+}
+
+.question-text {
+    margin-left: 16px;
+}
+.game-container {
+    font-family: 'Ubuntu', sans-serif;
+    width: 80vw;
+    border: 1px solid black;
+    margin: auto;
+    margin-top: 15%;
+}
+
 .selected-answer {
+    margin-left: 32px;
+    font-size: 1.5rem;
     background-color: yellow;
 }

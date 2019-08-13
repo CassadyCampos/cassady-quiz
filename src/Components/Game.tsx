@@ -6,7 +6,7 @@ import "../css/Game.css";
 import ParseHtmlEntity from "../Utility/HtmlEntityParser";
 
 interface GameProps {
-    domParserHtmlEntities: DOMParser
+  domParserHtmlEntities: DOMParser;
 }
 
 interface GameState {
@@ -45,19 +45,20 @@ class Game extends Component<GameProps, GameState> {
       possibleAnswers: [],
       selectedAnswer: "",
       answerConfirmed: false,
-    };
+                                  };
   }
 
   componentDidMount() {
     this.populateQuestions();
   }
+
   populateQuestions() {
     axios.get(`https://opentdb.com/api.php?amount=1`).then(res => {
       let question = res.data.results;
       this.setState({
         question: question
       });
-      this.setState({});
+      //   this.setState({});
       this.populatePossibleAnswers();
       this.shufflePossibleAnswers();
     });
@@ -77,13 +78,12 @@ class Game extends Component<GameProps, GameState> {
   renderQuestion() {
     const parser = this.props.domParserHtmlEntities;
     let oldString = this.state.question[0].question;
-    const convertedString = ParseHtmlEntity(oldString, parser)
+    const convertedString = ParseHtmlEntity(oldString, parser);
 
     return (
       <div>
         <h1 className="question-text">Here is your Question. . .</h1>
         <div>
-          {/* <div className="question-text">{this.state.question[0].question}</div> */}
           <div className="question-text">{convertedString}</div>
         </div>
       </div>
@@ -101,9 +101,9 @@ class Game extends Component<GameProps, GameState> {
   }
 
   selectAnswer(selectedAnswer: string) {
-      if (!this.state.answerConfirmed) {
-        this.setState({ selectedAnswer: selectedAnswer });
-      }
+    if (!this.state.answerConfirmed) {
+      this.setState({ selectedAnswer: selectedAnswer });
+    }
   }
 
   confirmAnswer() {
@@ -111,18 +111,23 @@ class Game extends Component<GameProps, GameState> {
   }
 
   renderPossibleAnswers() {
-      const parser = this.props.domParserHtmlEntities;
-      let convertedArray:string[] = [];
-      this.state.possibleAnswers.forEach(oldString => {
-          convertedArray.push(oldString);
-      });
+    const parser = this.props.domParserHtmlEntities;
+    let convertedArray: string[] = [];
+    this.state.possibleAnswers.forEach(oldString => {
+      convertedArray.push(oldString);
+    });
     return (
       <div className="possible-answers-list">
         {convertedArray.map(possibleAnswer => (
           <div
-            className={this.state.selectedAnswer === possibleAnswer ? 'selected-answer': 'possible-answer'}
+            className={
+              this.state.selectedAnswer === possibleAnswer
+                ? "card selected-answer"
+                : "card possible-answer"
+            }
             onClick={() => this.selectAnswer(possibleAnswer)}
-            key={this.state.possibleAnswers.indexOf(possibleAnswer)}>
+            key={this.state.possibleAnswers.indexOf(possibleAnswer)}
+          >
             {ParseHtmlEntity(possibleAnswer, parser)}
           </div>
         ))}
@@ -130,34 +135,45 @@ class Game extends Component<GameProps, GameState> {
     );
   }
 
-   renderAnswerDetails() {
-      if (this.state.selectedAnswer === this.state.question[0].correct_answer) {
-          return (
-              <div>
-              <div>CORRECT!</div>
-            <button>Play Again!</button>
-              </div>
-          )
-      }
-      return(
-        <div>
-        <div>WRONG!</div>
-      <button>Play Again!</button>
-        </div>
-      )
+  reset() {
+    this.populateQuestions();
+    this.setState({
+      selectedAnswer: "",
+      answerConfirmed: false
+    });
   }
 
+  renderAnswerDetails() {
+    const userAnswer = this.state.selectedAnswer;
+    const correctAnswer = this.state.question[0].correct_answer;
+    return (
+      <div>
+        <div>{userAnswer === correctAnswer ? "CORRECT!" : "WRONG!"}</div>
+        <button onClick={() => this.reset()}>Play Again!</button>
+        {userAnswer !== correctAnswer ? (
+          <div>{"The correct answer was " + correctAnswer}</div>
+        ) : (
+          ""
+        )}
+      </div>
+    );
+  }
 
   render() {
     return (
       <div className="game-container">
         {this.renderQuestion()}
         {this.renderPossibleAnswers()}
-        {this.state.selectedAnswer !== '' ? 
-        <div>
-            <button onClick={() => this.confirmAnswer()}>Confirm Answer!</button>
-        </div> : ''}
-        {this.state.answerConfirmed ? this.renderAnswerDetails() : ''}
+        {this.state.selectedAnswer !== "" ? (
+          <div>
+            <button onClick={() => this.confirmAnswer()}>
+              Confirm Answer!
+            </button>
+          </div>
+        ) : (
+          ""
+        )}
+        {this.state.answerConfirmed ? this.renderAnswerDetails() : ""}
       </div>
     );
   }

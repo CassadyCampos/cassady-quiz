@@ -7,6 +7,7 @@ class App extends Component {
     render() {
         return (
             <div>
+                {/* singleton DOMParser? IDK */}
                 <Game domParserHtmlEntities={new DOMParser()} />
             </div>
         )

@@ -81,7 +81,7 @@ class Game extends Component<GameProps, GameState> {
     const convertedString = ParseHtmlEntity(oldString, parser);
 
     return (
-      <div>
+      <div className="question-container">
         <h1 className="question-text">Here is your Question. . .</h1>
         <div>
           <div className="question-text">{convertedString}</div>
@@ -147,11 +147,11 @@ class Game extends Component<GameProps, GameState> {
     const userAnswer = this.state.selectedAnswer;
     const correctAnswer = this.state.question[0].correct_answer;
     return (
-      <div>
-        <div>{userAnswer === correctAnswer ? "CORRECT!" : "WRONG!"}</div>
-        <button onClick={() => this.reset()}>Play Again!</button>
+      <div className="arcade-result"> 
+        <div className="arcade-text">{userAnswer === correctAnswer ? "CORRECT!" : "The correct answer was " + correctAnswer}</div>
+        <button  className="play-again-btn" onClick={() => this.reset()}>Play Again!</button>
         {userAnswer !== correctAnswer ? (
-          <div>{"The correct answer was " + correctAnswer}</div>
+          <div className="answer"></div>
         ) : (
           ""
         )}
@@ -162,6 +162,7 @@ class Game extends Component<GameProps, GameState> {
   render() {
     return (
       <div className="game-container">
+        {this.state.answerConfirmed ? this.renderAnswerDetails() : ""}
         {this.renderQuestion()}
         {this.renderPossibleAnswers()}
         {this.state.selectedAnswer !== "" ? (
@@ -173,7 +174,7 @@ class Game extends Component<GameProps, GameState> {
         ) : (
           ""
         )}
-        {this.state.answerConfirmed ? this.renderAnswerDetails() : ""}
+        
       </div>
     );
   }

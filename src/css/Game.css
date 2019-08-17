@@ -1,9 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap');
+
 
 .possible-answers-list {
     display: flex;
     flex-wrap: wrap;
     border: 1px solid black;    
+    background: repeating-linear-gradient(to bottom, #0f0a1e, #0f0a1e 2px, #140e29 2px, #140e29 4px);
+
 }
 
 .possible-answer {
@@ -11,17 +15,32 @@
     margin-left: 32px;
 }
 
+.question-container {
+background: repeating-linear-gradient(to bottom, #0f0a1e, #0f0a1e 2px, #140e29 2px, #140e29 4px);
+}
+
 .question-text {
     margin-left: 16px;
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+
 }
+
 .game-container {
+    background: repeating-linear-gradient(to bottom, #0f0a1e, #0f0a1e 2px, #140e29 2px, #140e29 4px);
+    color: white;
     font-family: 'Ubuntu', sans-serif;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .selected-answer {
     margin-left: 32px;
     font-size: 1.5rem;
-    background-color: yellow;
+    background-color: rgb(175, 0, 42);
     transform: scale(0.90, 0.90);
     transition-duration: 0.4s;
 }
@@ -30,13 +49,66 @@
     width: 240px; 
     height: 240px;
     border: 1px solid black;
-    /* color: black; */
+
+    background-color: red; /* For browsers that do not support gradients */
+    background-image: linear-gradient(red, yellow); /* Standard syntax (must be last) */
     border-radius: 8px;
+
     transition-duration: 0.4s;
+
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
 }
 
 .card:hover {
     border: 1px solid red;
     transform: scale(0.90, 0.90);
     transition-duration: 0.4s;
+}
+
+.play-again-btn {
+    height: auto;
+    min-height: 36px;
+    width: 94px; 
+    border-radius: 8px;
+    background-color: maroon;
+}
+
+.arcade-result {
+    font-family: 'Press Start 2P', cursive;
+    background: repeating-linear-gradient(to bottom, #0f0a1e, #0f0a1e 2px, #140e29 2px, #140e29 4px);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.answer {
+    color: green;
+    font-size: 2rem;
+}
+.arcade-text {
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    margin: auto;
+    font-size: 40px;
+    line-height: 40px;
+    letter-spacing: 5px;
+    text-shadow: -2px 0 0 #fdff2a, -4px 0 0 #df4a42, 2px 0 0 #91fcfe, 4px 0 0 #4405fc;
+    animation: blink 1s steps(4, start) infinite;
+}
+
+    
+@keyframes blink {
+    to {visibility: hidden};    
+}
+
+
+body {
+    background: repeating-linear-gradient(to bottom, #0f0a1e, #0f0a1e 2px, #140e29 2px, #140e29 4px);
 }
